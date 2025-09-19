@@ -1311,10 +1311,10 @@ def train_one_epoch_lora_generate(
                     new_y = [-total_storage, -loss]
                     new_y = torch.tensor(new_y, dtype=torch.float32, device=all_y_ref[0].device)
                     new_y = new_y.unsqueeze(0)  # [1, 2]
-                    new_x = seq.unsqueeze(0).float()  # 或 .double() 取决于 all_x 的 dtype
+                    new_x = seq.unsqueeze(0).float()  
                     all_x_ref[0] = torch.cat([all_x_ref[0], new_x], dim=0)
                     all_y_ref[0] = torch.cat([all_y_ref[0], new_y], dim=0)
-                    assert mid_du_model is not dummy_model_plus_lora,"⚠ deepcopy fail"
+                    assert mid_du_model is not dummy_model_plus_lora,
                     state_path = os.path.join(base_path, f"model_state_dict_{num_meta_model[0]}.pth")
                     torch.save(mid_du_model, state_path)
                     del mid_du_model
