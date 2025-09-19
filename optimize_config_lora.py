@@ -69,7 +69,7 @@ class TaskDecoderModel(nn.Module):
         self.layer_num = 6
         self.block_num = 24
         self.param_per_layer = 5
-        # 每个位置的类别数列表
+
         base_list = [4,4,3,3,3]
         self.num_classes_list = base_list * self.block_num * self.layer_num  # 长度3600
         self.max_vocab_size = max(self.num_classes_list)
@@ -181,11 +181,9 @@ def decode_candidate(model, candidate_emb, max_seq_len=720, device='cuda'):
             tgt_position_ids = torch.arange(tgt_seq.size(1), device=device).unsqueeze(0).expand(B, -1)
             tgt_embed = model.position_embedding(tgt_position_ids)
 
-            # decoder调用时要保证 tgt_embed 的 seq_len 对应 tgt_seq 的长度
             decoder_output = model.decoder(tgt=tgt_embed, memory=memory)
             logits = model.classification_head(decoder_output)  # (B, T, V)
 
-            # 添加mask，禁止非法类别
             invalid_position_mask = torch.ones((model.max_vocab_size,), dtype=torch.bool, device=device)
             valid_num = model.num_classes_list[i]
             invalid_position_mask[:valid_num] = False
@@ -198,7 +196,7 @@ def decode_candidate(model, candidate_emb, max_seq_len=720, device='cuda'):
             generated_seq.append(next_token)
 
         generated_seq = torch.cat(generated_seq, dim=1)  # (B, S)
-        return generated_seq[:, :S].cpu()  # 返回固定长度序列
+        return generated_seq[:, :S].cpu()  
 
 
 from botorch.models import SingleTaskGP, ModelListGP
