@@ -703,12 +703,12 @@ def main():
                 "intermediate.dense",
             ]
             for name, module in model.named_modules():
-                if isinstance(module, torch.nn.Linear):  # 这里筛选你想的模块
-                    module.bias = None  # 你可以这么设置
+                if isinstance(module, torch.nn.Linear): 
+                    module.bias = None  
                 if any(t in name for t in target_modules):
                     full_name = "base_model.model." + name
                     param_names.append(full_name)
-                    # 统计模块内所有参数数量（weight 和 bias）
+         
                     num_params = sum(p.numel() for p in module.parameters())
                     param_shapes[full_name] = num_params
 
