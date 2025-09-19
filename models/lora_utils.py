@@ -484,7 +484,6 @@ class QuantConfigEmbedding(nn.Module):
         nn.init.normal_(self.mlp[-1].weight, std=1e-3)
 
     def _index_of(self, x, lst):
-        # 将具体值转成索引，没有找到抛异常
         if x not in lst:
             raise ValueError(f"Value {x} not in list {lst}")
         return lst.index(x)
@@ -511,7 +510,7 @@ class QuantConfigEmbedding(nn.Module):
 
         x = torch.cat([nb, nb0, nb1, bs0, bs1, pos_emb, mod], dim=-1).squeeze(0)  # shape (input_dim,)
         out = self.mlp(x)  # shape (r*r)
-        out = out.view(self.r, self.r)  # reshape成矩阵
+        out = out.view(self.r, self.r)  
 
         return  self.scale * out + torch.eye(self.r, device=out.device)
 
@@ -754,7 +753,7 @@ def collect_last_layer_activation(model, dataloader, device="cuda"):
     last_activation = {}
 
     def hook_fn(module, input, output):
-        last_activation['out'] = output.detach().to(torch.float16).cpu()  # 可改 float32 如需更高精度
+        last_activation['out'] = output.detach().to(torch.float16).cpu() 
 
     hook = last_linear.register_forward_hook(hook_fn)
 
@@ -831,18 +830,10 @@ def get_lora_svd_from_diff(model1, model2, r, target_modules=None):
 
 
 def select_first_point_by_minimax(dist_matrix: torch.Tensor):
-    """
-    选初始点：计算每个点到所有点的最大距离，选最大距离最小的点
-    也就是找“中心”点，保证初始点尽可能覆盖得好
-    """
     max_dists = dist_matrix.max(dim=1).values
     return torch.argmin(max_dists).item()
 
 def strict_k_center_greedy_with_init(dist_matrix: torch.Tensor, k: int):
-    """
-    严格贪心k-center算法，选初始点为最大最小距离最小点，
-    每步选能最大程度降低最大最小距离的点
-    """
     n = dist_matrix.size(0)
     selected = []
     not_selected = set(range(n))
