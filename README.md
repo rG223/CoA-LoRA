@@ -1,7 +1,5 @@
 # CoA-LoRA Training
 
-This project demonstrates how to generate LoRA adjustments.
-
 ## Project Structure
 
 ```bash
