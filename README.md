@@ -2,6 +2,39 @@
 
 This project demonstrates how to generate LoRA adjustments.
 
+## Project Structure
+
+```bash
+├── optimize_config_lora.py
+├── README.md
+├── requirements.txt
+├── run_clm.py
+├── run_glue.py
+│
+├── models/
+│   ├── allocation_utils.py
+│   ├── allocation_utils_2.py
+│   ├── distributed_utils.py
+│   ├── factorizations_utils.py
+│   ├── lora_utils.py
+│   ├── lq_utils.py
+│   ├── misc_utils.py
+│   ├── packbits_utils.py
+│   ├── quantization_utils.py
+│   ├── quantization_utils_2.py
+│   ├── ray_utils.py
+│   ├── tensor_container_utils.py
+│   ├── utils.py
+│   └── __init__.py
+│
+└── scripts/
+    ├── glue_lorasync.sh
+    ├── glue_lorasync_llama.sh
+    ├── glue_lora_lpq.sh
+    ├── glue_lora_share.sh
+    └── glue_lqlora.sh
+```
+
 ## Generating the Training Configuration Set
 
 To generate the training configuration set, follow these steps:
