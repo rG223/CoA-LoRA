@@ -1,5 +1,14 @@
 # CoA-LoRA Training
 
+This repository contains the official implementation of **CoA-LoRA (Configuration-Aware LoRA)**, proposed in
+
+> **On-the-Fly Adaptation to Quantization: Configuration-Aware LoRA for Efficient Fine-Tuning of Quantized LLMs**  
+> *ICLR 2026*
+
+CoA-LoRA enables **a single LoRA-enhanced model to adapt on-the-fly to diverse quantization configurations**, avoiding the need to retrain or store separate LoRA adapters for each compression setting. This design is particularly suitable for **edge and on-device deployment**, where hardware constraints and memory budgets may vary dynamically.
+
+---
+
 ## Project Structure
 
 ```bash
@@ -32,6 +41,10 @@
     ├── glue_lora_share.sh
     └── glue_lqlora.sh
 ```
+## Environment Setup
+
+```bash
+pip install -r requirements.txt
 
 ## Generating the Training Configuration Set
 
@@ -57,7 +70,23 @@ Use the `prepare_model_for_lora_classification` function to modify your base mod
          idx=idx)
 ```
 
-## Training configuration-aware model
+## Training 
+To train a configuration-aware model on GLUE tasks:
+
 ```python
 bash scripts/glue_lorasync.sh
 ```
+
+Other scripts provide baselines and ablation variants, including QLoRA, LPQ, and shared-LoRA.
+
+## Citation
+
+```bibtex
+@inproceedings{
+ye2026onthefly,
+title={On-the-Fly Adaptation to Quantization: Configuration-Aware Lo{RA} for Efficient Fine-Tuning of Quantized {LLM}s},
+author={Ye, Rongguang, Ngai, Edith C.H.,  and
+      Tang, Ming},
+booktitle={The Fourteenth International Conference on Learning Representations},
+year={2026}
+}
