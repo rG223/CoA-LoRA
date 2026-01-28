@@ -41,10 +41,12 @@ CoA-LoRA enables **a single LoRA-enhanced model to adapt on-the-fly to diverse q
     ├── glue_lora_share.sh
     └── glue_lqlora.sh
 ```
+
 ## Environment Setup
 
 ```bash
 pip install -r requirements.txt
+```
 
 ## Generating the Training Configuration Set
 
